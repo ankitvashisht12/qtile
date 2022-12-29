@@ -64,7 +64,7 @@ keys = [
 
 # QTILE LAYOUT KEYS
     # Key([mod], "n", lazy.layout.normalize()),
-    Key([mod], "space", lazy.next_layout()),
+    # Key([mod], "space", lazy.next_layout()),
 
 # CHANGE FOCUS
     Key([mod], "Up", lazy.layout.up()),
@@ -128,10 +128,10 @@ keys = [
     Key([mod, "shift"], "f", lazy.layout.flip()),
 
 # FLIP LAYOUT FOR BSP
-    Key([mod, "mod1"], "k", lazy.layout.flip_up()),
-    Key([mod, "mod1"], "j", lazy.layout.flip_down()),
-    Key([mod, "mod1"], "l", lazy.layout.flip_right()),
-    Key([mod, "mod1"], "h", lazy.layout.flip_left()),
+    # Key([mod, "mod1"], "k", lazy.layout.flip_up()),
+    # Key([mod, "mod1"], "j", lazy.layout.flip_down()),
+    # Key([mod, "mod1"], "l", lazy.layout.flip_right()),
+    # Key([mod, "mod1"], "h", lazy.layout.flip_left()),
 
 # MOVE WINDOWS UP OR DOWN BSP LAYOUT
     Key([mod, "shift"], "k", lazy.layout.shuffle_up()),
@@ -254,8 +254,8 @@ def get_group_name(workspace, room):
 # List of available workspaces.
 # Each workspace has its own prefix and hotkey.
 workspaces = [
-    ('AV', '1'),
-    ('WORK', '2'),
+    ('AV', 'F1'),
+    ('WORK', 'F2'),
 ]
 
 workspaceText = widget.TextBox(
@@ -362,7 +362,7 @@ for workspace, hotkey in workspaces:
 
 # Assign individual hotkeys for each workspace we have
 for workspace, hotkey in workspaces:
-    keys.append(Key([mod, "control"], hotkey, lazy.function(
+    keys.append(Key([mod], hotkey, lazy.function(
         to_workspace(workspace))))
     keys.append(Key([mod, "shift"], hotkey, lazy.function(
         window_to_workspace(workspace))))
