@@ -34,7 +34,6 @@ from libqtile import layout, bar, widget, hook
 from libqtile.config import Click, DropDown, ScratchPad, Drag, Group, Key, Match, Screen, Rule
 from libqtile.command import lazy
 from libqtile.widget import Spacer
-#import arcobattery
 
 ## DEFAULTS
 follow_mouse_focus = False
@@ -45,18 +44,6 @@ mod1 = "alt"
 mod2 = "control"
 home = os.path.expanduser('~')
 
-
-@lazy.function
-def window_to_prev_group(qtile):
-    if qtile.currentWindow is not None:
-        i = qtile.groups.index(qtile.currentGroup)
-        qtile.currentWindow.togroup(qtile.groups[i - 1].name)
-
-@lazy.function
-def window_to_next_group(qtile):
-    if qtile.currentWindow is not None:
-        i = qtile.groups.index(qtile.currentGroup)
-        qtile.currentWindow.togroup(qtile.groups[i + 1].name)
 
 keys = [
 
@@ -76,7 +63,7 @@ keys = [
     Key([mod, "shift"], "r", lazy.reload_config()),
 
 # QTILE LAYOUT KEYS
-    Key([mod], "n", lazy.layout.normalize()),
+    # Key([mod], "n", lazy.layout.normalize()),
     Key([mod], "space", lazy.next_layout()),
 
 # CHANGE FOCUS
@@ -163,81 +150,248 @@ keys = [
 
     ]
 
-def window_to_previous_screen(qtile, switch_group=False, switch_screen=False):
-    i = qtile.screens.index(qtile.current_screen)
-    if i != 0:
-        group = qtile.screens[i - 1].group.name
-        qtile.current_window.togroup(group, switch_group=switch_group)
-        if switch_screen == True:
-            qtile.cmd_to_screen(i - 1)
+# START
+# -------------------------------------
+# ---- Groups and Rooms ---------------
+# -------------------------------------
 
-def window_to_next_screen(qtile, switch_group=False, switch_screen=False):
-    i = qtile.screens.index(qtile.current_screen)
-    if i + 1 != len(qtile.screens):
-        group = qtile.screens[i + 1].group.name
-        qtile.current_window.togroup(group, switch_group=switch_group)
-        if switch_screen == True:
-            qtile.cmd_to_screen(i + 1)
+#
+# @lazy.function
+# def window_to_prev_group(qtile):
+#     if qtile.currentWindow is not None:
+#         i = qtile.groups.index(qtile.currentGroup)
+#         qtile.currentWindow.togroup(qtile.groups[i - 1].name)
+#
+# @lazy.function
+# def window_to_next_group(qtile):
+#     if qtile.currentWindow is not None:
+#         i = qtile.groups.index(qtile.currentGroup)
+#         qtile.currentWindow.togroup(qtile.groups[i + 1].name)
+#
+# def window_to_previous_screen(qtile, switch_group=False, switch_screen=False):
+#     i = qtile.screens.index(qtile.current_screen)
+#     if i != 0:
+#         group = qtile.screens[i - 1].group.name
+#         qtile.current_window.togroup(group, switch_group=switch_group)
+#         if switch_screen == True:
+#             qtile.cmd_to_screen(i - 1)
+#
+# def window_to_next_screen(qtile, switch_group=False, switch_screen=False):
+#     i = qtile.screens.index(qtile.current_screen)
+#     if i + 1 != len(qtile.screens):
+#         group = qtile.screens[i + 1].group.name
+#         qtile.current_window.togroup(group, switch_group=switch_group)
+#         if switch_screen == True:
+#             qtile.cmd_to_screen(i + 1)
+#
+# keys.extend([
+#     # MOVE WINDOW TO NEXT SCREEN
+#     Key([mod,"shift"], "Right", lazy.function(window_to_next_screen, switch_screen=True)),
+#     Key([mod,"shift"], "Left", lazy.function(window_to_previous_screen, switch_screen=True)),
+# ])
+#
+# groups = []
+#
+# # FOR QWERTY KEYBOARDS
+# group_names = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0",]
+#
+# # FOR AZERTY KEYBOARDS
+# #group_names = ["ampersand", "eacute", "quotedbl", "apostrophe", "parenleft", "section", "egrave", "exclam", "ccedilla", "agrave",]
+#
+# #group_labels = ["1 ", "2 ", "3 ", "4 ", "5 ", "6 ", "7 ", "8 ", "9 ", "0",]
+# # group_labels = ["", "", "",  "", "", "", "", "", "", "",]
+#
+# # vscode icon = "﬏"
+# group_labels = [ "", "", "", "", "","","", "", "", ""]
+# #group_labels = ["Web", "Edit/chat", "Image", "Gimp", "Meld", "Video", "Vb", "Files", "Mail", "Music",]
+#
+# group_layouts = ["monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "max", "monadtall", "monadtall",  "monadtall",  "monadtall"]
+# #group_layouts = ["monadtall", "matrix", "monadtall", "bsp", "monadtall", "matrix", "monadtall", "bsp", "monadtall", "monadtall",]
+#
+# for i in range(len(group_names)):
+#     groups.append(
+#         Group(
+#             name=group_names[i],
+#             layout=group_layouts[i].lower(),
+#             label=group_labels[i],
+#         ))
+#
+# for i in groups:
+#     keys.extend([
+#
+# #CHANGE WORKSPACES
+#         Key([mod], i.name, lazy.group[i.name].toscreen()),
+#         Key([mod], "Tab", lazy.screen.next_group()),
+#         Key([mod, "shift" ], "Tab", lazy.screen.prev_group()),
+#         Key(["mod1"], "Tab", lazy.screen.next_group()),
+#         Key(["mod1", "shift"], "Tab", lazy.screen.prev_group()),
+#
+# # MOVE WINDOW TO SELECTED WORKSPACE 1-10 AND STAY ON WORKSPACE
+#         #Key([mod, "shift"], i.name, lazy.window.togroup(i.name)),
+# # MOVE WINDOW TO SELECTED WORKSPACE 1-10 AND FOLLOW MOVED WINDOW TO WORKSPACE
+#         Key([mod, "shift"], i.name, lazy.window.togroup(i.name) , lazy.group[i.name].toscreen()),
+#     ])
+#
+# END
 
-keys.extend([
-    # MOVE WINDOW TO NEXT SCREEN
-    Key([mod,"shift"], "Right", lazy.function(window_to_next_screen, switch_screen=True)),
-    Key([mod,"shift"], "Left", lazy.function(window_to_previous_screen, switch_screen=True)),
-])
 
+# ----------------------------
+# --- Workspaces and Rooms ---
+# ----------------------------
+
+# The basic idea behind Workspaces and Rooms is to control
+# DIFFERENT subsets of groups with the SAME hotkeys.
+# So we can have multiple 'qwerasdf' rooms in a different workspaces.
+#
+# Qtile Groups are used behind the scenes, but their visibility
+# is set dynamically.
+
+def get_group_name(workspace, room):
+    """ Calculate Group name based on (workspace,room) combination.
+    """
+    return "%s%s" % (room, workspace)
+
+# List of available workspaces.
+# Each workspace has its own prefix and hotkey.
+workspaces = [
+    ('AV', '1'),
+    ('WORK', '2'),
+]
+
+workspaceText = widget.TextBox(
+    text=workspaces[0][0],
+)
+
+# List of available rooms.
+# Rooms are identical between workspaces, but they can
+# be changed to different ones as well. Minor changes required.
+rooms = "1234567890"
+
+# Oops, time for a little hack there.
+# This is a global object with information about current workspace.
+# (viable as config code, not sure about client-server though)
+wsp = {
+    'current': workspaces[0][0], # first workspace is active by default
+}
+# ... and information about active group in the each workspace.
+for w, _ in workspaces:
+    wsp[w] = {
+        'active_group': get_group_name(w, rooms[0]) # first room is active by default
+    }
+
+def get_workspace_groups(workspace):
+    """ Get list of Groups that belongs to workspace.
+    """
+    return [ get_group_name(workspace, room) for room in rooms]
+
+def get_room_groups(room):
+    """ Get list of Groups that belongs to room.
+    """
+    return [ get_group_name(w, room) for w,_ in workspaces]
+
+def to_workspace(workspace):
+    """ Change current workspace to another one.
+    """
+    def f(qtile):
+        global wsp
+
+        # we need to save current active room(group) somewhere
+        # to return to it later
+        wsp[wsp['current']]['active_group'] = qtile.current_group.name
+
+        # now we can change current workspace to the new one
+        # (no actual switch there)
+        wsp['current'] = workspace
+        workspaceText.text = workspace
+        # and navigate to the active group from the workspace
+        # (actual switch)
+        qtile.groups_map[
+            wsp[workspace]['active_group']
+        ].cmd_toscreen(toggle=False)
+        # ].cmd_toscreen()
+
+        # we also need to change subset of visible groups in the GroupBox widget
+        qtile.widgets_map['groupbox'].visible_groups=get_workspace_groups(workspace)
+        # qtile.widgets_map['groupbox'].visible_groups = get_workspace_groups(workspace)
+        qtile.widgets_map['groupbox'].draw()
+        # qtile.widgetMap['workspacebox'].visible_groups = get_room_groups(wsp[workspace]['active_group'][:1])
+        # qtile.widgetMap['workspacebox'].draw()
+        # You can do some other cosmetic stuff here.
+        # For example, change Bar background depending on the current workspace.
+        # # qtile.widgetMap['groupbox'].bar.background="ff0000"
+    return f
+
+def to_room(room):
+    """ Change active room to another within the current workspace.
+    """
+    def f(qtile):
+        global wsp
+        # qtile.widgetMap['workspacebox'].visible_groups=get_room_groups(room)
+        # qtile.widgetMap['workspacebox'].draw()
+        qtile.groups_map[get_group_name(wsp['current'], room)].cmd_toscreen(toggle=False)
+        # qtile.groups_map[get_group_name(wsp['current'], room)].cmd_toscreen()
+    return f
+
+def window_to_workspace(workspace, room=rooms[0]):
+    """ Move active window to another workspace.
+    """
+    def f(qtile):
+        global wsp
+        qtile.current_window.togroup(wsp[workspace]['active_group'])
+    return f
+
+def window_to_room(room):
+    """ Move active window to another room within the current workspace.
+    """
+    def f(qtile):
+        global wsp
+        qtile.current_window.togroup(get_group_name(wsp['current'], room))
+    return f
+
+group_labels = [ "", "", "", "", "", "", "","", "", ""] 
+group_layouts = ["monadtall"] * 10
+
+# Create individual Group for each (workspace,room) combination we have
 groups = []
+for workspace, hotkey in workspaces:
+    for room in rooms:
+        group_name = get_group_name(workspace, room)
+        group_label = group_labels[int(room)]
+        group_layout = group_layouts[int(room)]
+        groups.append(Group(name=group_name, layout=group_layout, label=group_label))
 
-# FOR QWERTY KEYBOARDS
-group_names = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0",]
+# Assign individual hotkeys for each workspace we have
+for workspace, hotkey in workspaces:
+    keys.append(Key([mod, "control"], hotkey, lazy.function(
+        to_workspace(workspace))))
+    keys.append(Key([mod, "shift"], hotkey, lazy.function(
+        window_to_workspace(workspace))))
 
-# FOR AZERTY KEYBOARDS
-#group_names = ["ampersand", "eacute", "quotedbl", "apostrophe", "parenleft", "section", "egrave", "exclam", "ccedilla", "agrave",]
+# Assign shared hotkeys for each room we have.
+# Decision about actual group to open is made dynamically.
+for room in rooms:
+    keys.append(Key([mod], room, lazy.function(
+        to_room(room))))
+    keys.append(Key([mod, "shift"], room, lazy.function(
+        window_to_room(room))))
 
-#group_labels = ["1 ", "2 ", "3 ", "4 ", "5 ", "6 ", "7 ", "8 ", "9 ", "0",]
-# group_labels = ["", "", "",  "", "", "", "", "", "", "",]
+# -------------------------------------
+# ---- ScratchPad ---------------------
+# -------------------------------------
 
-# vscode icon = "﬏"
-group_labels = [ "", "", "", "", "","","", "", "", ""]
-#group_labels = ["Web", "Edit/chat", "Image", "Gimp", "Meld", "Video", "Vb", "Files", "Mail", "Music",]
-
-group_layouts = ["monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "max", "monadtall", "monadtall",  "monadtall",  "monadtall"]
-#group_layouts = ["monadtall", "matrix", "monadtall", "bsp", "monadtall", "matrix", "monadtall", "bsp", "monadtall", "monadtall",]
-
-for i in range(len(group_names)):
-    groups.append(
-        Group(
-            name=group_names[i],
-            layout=group_layouts[i].lower(),
-            label=group_labels[i],
-        ))
-
-for i in groups:
-    keys.extend([
-
-#CHANGE WORKSPACES
-        Key([mod], i.name, lazy.group[i.name].toscreen()),
-        Key([mod], "Tab", lazy.screen.next_group()),
-        Key([mod, "shift" ], "Tab", lazy.screen.prev_group()),
-        Key(["mod1"], "Tab", lazy.screen.next_group()),
-        Key(["mod1", "shift"], "Tab", lazy.screen.prev_group()),
-
-# MOVE WINDOW TO SELECTED WORKSPACE 1-10 AND STAY ON WORKSPACE
-        #Key([mod, "shift"], i.name, lazy.window.togroup(i.name)),
-# MOVE WINDOW TO SELECTED WORKSPACE 1-10 AND FOLLOW MOVED WINDOW TO WORKSPACE
-        Key([mod, "shift"], i.name, lazy.window.togroup(i.name) , lazy.group[i.name].toscreen()),
-    ])
-
-
-# Define ScratchPad
+# # Define ScratchPad
 groups.append(ScratchPad("scratchpad", [
     DropDown("term", "alacritty --class=scratch", width=0.8, height=0.8, x=0.1, y=0.1, opacity=1),
 ]))
-
-# ScratchPad keybindings
+#
+# # ScratchPad keybindings
 keys.extend([
     Key([mod], "n", lazy.group['scratchpad'].dropdown_toggle('term'))
 ])
 
+# ------------------------
+# --- Layout -------------
+# ------------------------
 
 def init_layout_theme():
     return {"margin":5,
@@ -293,6 +447,16 @@ widget_defaults = init_widgets_defaults()
 def init_widgets_list():
     prompt = "{0}@{1}: ".format(os.environ["USER"], socket.gethostname())
     widgets_list = [
+               Spacer(
+                   length=8,
+               ),
+               workspaceText,
+               widget.Sep(
+                        linewidth = 1,
+                        padding = 10,
+                        foreground = colors[2],
+                        background = colors[1]
+                        ),
                widget.GroupBox(font="FontAwesome",
                         fontsize = 16,
                         margin_y = 1,
@@ -307,7 +471,8 @@ def init_widgets_list():
                         highlight_method = "text",
                         this_current_screen_border = colors[8],
                         foreground = colors[2],
-                        background = colors[1]
+                        background = colors[1],
+                        visible_groups = get_workspace_groups(wsp['current'])
                         ),
                widget.Sep(
                         linewidth = 1,
