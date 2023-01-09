@@ -36,7 +36,8 @@ super + e
 
 #Browser
 super + b
-    brave
+    brave --profile-directory="Default"
+
 
 #Conky-toggle
 #super + c
@@ -199,6 +200,10 @@ ctrl + alt + a
 #################################################################
 # ALT + ... KEYS
 #################################################################
+
+# Work browser
+alt + b
+  brave --profile-directory="Profile 1"
 
 #Wallpaper trash
 alt + t
@@ -409,8 +414,8 @@ ctrl + alt + o
 #    qtile-cmd -o screen -f next_group
 
 # set the window state
-#super + space
-#    qtile-cmd -o cmd -f next_layout
+super + space
+   qtile cmd-obj -o cmd -f next_layout
 
 
 #################################################################
