@@ -54,16 +54,17 @@ keys = [
     Key([mod], "f", lazy.window.toggle_fullscreen()),
     Key([mod], "q", lazy.window.kill()),
     Key([mod], "m", lazy.window.toggle_minimize()),
+    # Key([mod], "o", lazy.window.layout.maximize()),
 
 
 # SUPER + SHIFT KEYS
 
     Key([mod, "shift"], "q", lazy.window.kill()),
-    #Key([mod, "shift"], "r", lazy.restart()),
+    # Key([mod, "shift"], "r", lazy.restart()),
     Key([mod, "shift"], "r", lazy.reload_config()),
 
 # QTILE LAYOUT KEYS
-    # Key([mod], "n", lazy.layout.normalize()),
+    # Key([mod], "g", lazy.layout.normalize()),
     # Key([mod], "space", lazy.next_layout()),
 
 # CHANGE FOCUS
@@ -406,13 +407,17 @@ layout_theme = init_layout_theme()
 layouts = [
     #layout.MonadTall(margin=8, border_width=2, border_focus="#5e81ac", border_normal="#4c566a"),
     layout.MonadTall(**layout_theme),
+    layout.MonadThreeCol(**layout_theme),
     #layout.MonadWide(margin=8, border_width=2, border_focus="#5e81ac", border_normal="#4c566a"),
     layout.MonadWide(**layout_theme),
     layout.Matrix(**layout_theme),
     layout.Bsp(**layout_theme),
     layout.Floating(**layout_theme),
     layout.RatioTile(**layout_theme),
-    layout.Max(**layout_theme)
+    layout.Tile(**layout_theme),
+    layout.Spiral(**layout_theme),
+    layout.Max(**layout_theme),
+    layout.Zoomy(**layout_theme)
 ]
 
 # COLORS FOR THE BAR
@@ -691,14 +696,14 @@ dgroups_app_rules = []
 #               "spotify", "pragha", "clementine", "deadbeef", "audacious" ]
 #     ######################################################################################
 #
-# wm_class = client.window.get_wm_class()[0]
+#     wm_class = client.window.get_wm_class()[0]
 #
 #     for i in range(len(d)):
 #         if wm_class in list(d.values())[i]:
 #             group = list(d.keys())[i]
 #             client.togroup(group)
 #             client.group.cmd_toscreen(toggle=False)
-
+#
 # END
 # ASSIGN APPLICATIONS TO A SPECIFIC GROUPNAME
 
